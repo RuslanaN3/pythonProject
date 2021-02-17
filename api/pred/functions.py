@@ -15,20 +15,18 @@ def transform_image(infile):
     return timg
 
 
-def get_prediction(input_tensor, model):
-    outputs = model.forward(input_tensor)
-    _, y_hat = outputs.max(1)
-    prediction = y_hat.item()
-    return prediction
+transform_img = transforms.Compose([transforms.ToTensor()])
 
 
-def render_prediction(prediction_idx):
-    return 0
-# transform prediction
-# stridx = str(prediction_idx)
-# class_name = 'Unknown'
-# if img_class_map is not None:
-#     if stridx in img_class_map is not None:
-#         class_name = img_class_map[stridx][1]
-#
-# return prediction_idx, class_name
+def get_prediction(img, threshold, smodel):
+    img = transform_img(img)  # Apply the transform to the image
+    pred = smodel([img])
+    pred_boxes = [[(i[0], i[1]), (i[2], i[3])] for i in list(pred[0]['boxes'].detach().numpy())]  # Bounding boxes
+    pred_labels = list(pred[0]["labels"].detach().numpy())
+    pred_scores = list(pred[0]["scores"].detach().numpy())
+    pred_th_scores = [round(x, 2) for x in pred_scores if x > threshold]
+    pred_t = [pred_scores.index(x) for x in pred_scores if x > threshold][
+        -1]  # Get list of index with score greater than threshold.
+    pred_boxes = pred_boxes[:pred_t + 1]
+    pred_labels = pred_labels[:pred_t + 1]
+    return pred_boxes, pred_labels, pred_th_scores
