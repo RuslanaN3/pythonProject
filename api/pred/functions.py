@@ -1,20 +1,6 @@
 import torchvision.transforms as transforms
 from PIL import Image
 
-
-def transform_image(infile):
-    input_transforms = [transforms.Resize(255),
-                        transforms.CenterCrop(224),
-                        transforms.ToTensor(),
-                        transforms.Normalize([0.485, 0.456, 0.406],
-                                             [0.229, 0.224, 0.225])]
-    my_transforms = transforms.Compose(input_transforms)
-    image = Image.open(infile)
-    timg = my_transforms(image)
-    timg.unsqueeze_(0)
-    return timg
-
-
 transform_img = transforms.Compose([transforms.ToTensor()])
 
 
