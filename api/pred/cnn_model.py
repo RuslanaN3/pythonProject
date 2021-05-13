@@ -14,8 +14,8 @@ class Net(nn.Module):
         self.fc3 = nn.Linear(in_features=84, out_features=2)
 
     def forward(self, x):
-        x = self.pool(F.elu(self.conv1(x)))
-        x = self.pool(F.elu(self.conv2(x)))
+        x = self.pool(F.relu(self.conv1(x)))
+        x = self.pool(F.relu(self.conv2(x)))
         x = x.reshape(x.size(0), -1)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
@@ -25,7 +25,7 @@ class Net(nn.Module):
 
 def get_model():
     device = torch.device('cpu')
-    path = "api/pred/cnr_model_2_relu.pt"
+    path = "api/pred/cnn_model_lenet5.pt"
     model = Net()
     model.load_state_dict(torch.load(path, map_location=device))
     model.eval()

@@ -7,7 +7,7 @@ def convert_data(predictions):
     for indx, pc in enumerate(patches_coord):
         slot_id = pc["SlotId"]
         slot_state = "VACANT" if predictions[indx] == 0 else "OCCUPIED"
-        parking_slots_states.append({"slotNumber": slot_id, "slotState": slot_state})
+        parking_slots_states.append({"slotNumber": slot_id, "slotStatus": slot_state})
     return parking_slots_states
 
 # {

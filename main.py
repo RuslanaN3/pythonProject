@@ -13,4 +13,4 @@ def predict():
             preds = []
             preds = get_slot_states(file)
             parking_slots_states = convert_data(preds)
-            return jsonify(parking_slots_states)
+            return jsonify({"id": 1, "parkingSlots": parking_slots_states})
